@@ -1,5 +1,7 @@
 //nome da classe
 public with sharing class ClasseDemonstraEstrutura {//inicio da classe
+
+    //SALVAR SEMPRE = CTRL + S
     
     //metodo da classe, uma classe pode ter varios metodos
     public static boolean nomeDoMetodo(){//inicio do método
@@ -71,6 +73,56 @@ public with sharing class ClasseDemonstraEstrutura {//inicio da classe
     //classe sem retorno
     public static void metodoSemRetorno(){
         
+    }
+
+    //Estrutura do SOQL
+    //SELECT
+    //campos
+    //FROM
+    //nome do objeto
+    //WHERE
+    //condição de busca
+    private static List<Account> getAccounts(){
+        List<Account> accountList =  new List<Account>([SELECT Id, Name FROM Account WHERE Id != '']);
+        return accountList;
+    }
+
+    public static void getAccountPrivate(){
+        system.debug(ClasseDemonstraEstrutura.getAccounts());
+    }
+
+    //DESAFIO - Montar um método que busque e retorne uma lista com todas as oportunidade com a faze igual  'Closed Won'
+    public static List<Opportunity> getOpportunitiesClosedWon(){
+        List<Opportunity> oppList = new List<Opportunity>();
+
+        oppList = [SELECT Id, Name FROM Opportunity WHERE StageName = 'Closed Won'];
+
+        system.debug(oppList);
+        system.debug('tamanho '+oppList.size());
+
+        return oppList;
+    }
+
+    public static List<Opportunity> getOpportunitiesClosedWon2(){
+        return [SELECT Id, Name FROM Opportunity WHERE StageName = 'Closed Won'];
+    } 
+    
+    public static List<Opportunity> getOpportunitiesClosedWon3(){
+        List<Opportunity> oppList = new List<Opportunity>([SELECT Id, Name FROM Opportunity WHERE StageName = 'Closed Won']);
+        system.debug(oppList);
+        system.debug('tamanho '+oppList.size());
+        return oppList;
+    } 
+    
+    //Exemplo parâmetros
+    public static Integer exemploParametros(Integer pInt, Integer pDiv){
+
+        Integer intTest = (10 + pInt)/pDiv;
+
+        system.debug('o valor de intTest é '+intTest);
+
+        return intTest;
+
     }
 
 }//fim da classe
