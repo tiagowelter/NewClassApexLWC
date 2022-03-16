@@ -67,6 +67,10 @@ public with sharing class ClasseDemonstraEstrutura {//inicio da classe
         )
         */
 
+        Account contaObjeto = new Account();
+        contaObjeto.Name = 'Test';
+        system.debug('contaObjeto '+contaObjeto);
+
         return bFalse;
     }//fim do método
 
@@ -116,13 +120,93 @@ public with sharing class ClasseDemonstraEstrutura {//inicio da classe
     
     //Exemplo parâmetros
     public static Integer exemploParametros(Integer pInt, Integer pDiv){
-
         Integer intTest = (10 + pInt)/pDiv;
-
         system.debug('o valor de intTest é '+intTest);
-
         return intTest;
-
     }
+
+    //DESAFIO - criar um método que recebe um nome de uma pessoa, e imprima com o system debug 'Olá NOME'
+    public static void helloName(String name, String sobrenome){
+        system.debug('Olá '+name+' '+sobrenome);
+    }
+
+    public static String helloName2(String name, String sobrenome){
+        return 'Olá '+name+' '+sobrenome;
+    } 
+    
+    public static void callMethods(){
+        //exemplo chamando o void
+        ClasseDemonstraEstrutura.helloName('Tiago','Welter');
+
+        //exemplo chamando um  metodo sem void e com retorno
+        system.debug('O retorno do metodo helloName2 é : '+ClasseDemonstraEstrutura.helloName2('Tiago','Welter'));
+    }
+
+    //EXECUÇÃO DML - insert - update - delete - upsert
+    public static Account dmlAccountInsert(String name){
+        Account accountObj = new Account();
+        accountObj.Name = name;
+        insert accountObj;
+        return accountObj;
+    }
+
+    public static Account dmlAccountUpdate(String name, String idDaConta){
+        List<Account> accountList = new List<Account>([SELECT Id, Name FROM Account WHERE Id = :idDaConta]); //primeiro buscamos as informações
+        Account accountObj = accountList.get(0); //depois pegamos a unica linha que retorna e colocamos no objeto Account
+        accountObj.Name = name;
+        update accountObj;
+        return accountObj;
+    }
+
+    public static void dmlAccountDelete(String idDaConta){
+        List<Account> accountList = [SELECT Id FROM Account WHERE Id = :idDaConta];
+        delete accountList;
+    }
+
+    //DESAFIO - Receber o sobrenome e o nome da empresa e vamos inserir um Lead, o método deve retornar o Id do lead inserid
+    public static Id insertLead(String lastName, String companyName){
+        Lead leadObj = new Lead();
+        leadObj.LastName = lastName;
+        leadObj.Company = companyName;
+
+        insert leadObj;
+
+        return leadObj.Id;
+    }
+
+    //estruturas de condição
+    public static boolean demosntraEstruturaCondicao(Integer idade){
+        //quero returnar true se a pessoa for maior de idade, senão retorna false
+        boolean bMaiorDeIdade;
+        if( idade < 18 ){
+            system.debug('menor de idade');
+            bMaiorDeIdade = false;
+        }else{
+            system.debug('maior de idade');
+            bMaiorDeIdade = true;
+        }
+        return bMaiorDeIdade;
+    }
+
+    public static void demosntraEstruturaCondicao2(Integer idade){
+        if(idade < 0 || idade == null){
+            system.debug('idade inválida');
+        }else{
+            if(idade < 13){
+                system.debug('criança');
+            }else if(idade >= 13 && idade <= 21 ){
+                system.debug('adolescente');
+            }else if(idade > 21 && idade < 65){
+                system.debug('adulto');
+            }else{
+                system.debug('idoso');
+            }
+        }
+    }
+
+    //DESAFIO
+    //Construir um método que receba dois parâmetros do tipo Inteiro e retorne o a soma destes dois parâmetros
+    //Se o parâmetro 1 for maior do 5 deve somar mais dois neste resultado    
+
 
 }//fim da classe
